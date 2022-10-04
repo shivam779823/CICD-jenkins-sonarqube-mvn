@@ -65,6 +65,7 @@ pipeline {
                      withSonarQubeEnv(credentialsId: 'sonar-key') { 
                             sh "mvn sonar:sonar"
                        }
+                  }
             }
         }
         stage("Quality Gate") {
@@ -78,4 +79,4 @@ pipeline {
         }
     }
 }
-}
+
