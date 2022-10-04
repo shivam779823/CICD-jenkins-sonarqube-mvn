@@ -61,11 +61,10 @@ pipeline {
         }
         stage('build && SonarQube analysis') {
             steps {
-                 withSonarQubeEnv(credentialsId: 'sonar-key') {
-                    // Optionally use a Maven environment you've configured already
-                     sh "mvn sonar:sonar"
-                    
-                }
+                  script{
+                     withSonarQubeEnv(credentialsId: 'sonar-key') { 
+                            sh "mvn sonar:sonar"
+                       }
             }
         }
         stage("Quality Gate") {
