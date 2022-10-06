@@ -86,11 +86,10 @@ pipeline {
 
          stage("docker image build")  {
             steps {
-                // script {
-                //     dockerImage = docker.build("shiva9921/mywebsite:${env.BUILD_ID}")
-                // }
-                sh "docker build -t tom ."
-                sh "docker run -p 8080:8081 tom"
+                script {
+                    dockerImage = docker.build("tom")
+                }
+               
             }
          } 
         
