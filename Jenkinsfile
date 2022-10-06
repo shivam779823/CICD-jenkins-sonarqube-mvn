@@ -59,7 +59,7 @@ pipeline {
 
             }
         }
-        stage('build && SonarQube analysis') {
+        stage('SonarQube analysis') {
             steps {
                   script{
                      withSonarQubeEnv(credentialsId: 'sonar-key') { 
@@ -68,21 +68,32 @@ pipeline {
                   }
             }
         }
-        // stage("Quality Gate") {
-        //     steps {
-        //         timeout(time: 1, unit: 'HOURS') {
-        //             // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
-        //             // true = set pipeline to UNSTABLE, false = don't
-        //             waitForQualityGate abortPipeline: true
-        //         }
-        //     }
-        // }
+        stage("Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    // Parameter indicates whether to set pipeline to UNSTABLE if Quality Gate fails
+                    // true = set pipeline to UNSTABLE, false = don't
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
 
          stage("maven build") {
                  steps{
                     sh "mvn clean install"
                 }
               }
+
+         stage("docker image build")  {
+            steps {
+                // script {
+                //     dockerImage = docker.build("shiva9921/mywebsite:${env.BUILD_ID}")
+                // }
+                sh "docker build -t tom ."
+                sh "docker run -p 8080:8081 tom"
+            }
+         } 
+        
     }
 }
 
