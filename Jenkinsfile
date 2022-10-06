@@ -89,8 +89,9 @@ pipeline {
             steps {
                 script {
                     dockerImage = docker.build("tom")
+                    sh "docker run -p 8080:8081 tom:latest "
                 }
-               
+            
             }
          } 
         
